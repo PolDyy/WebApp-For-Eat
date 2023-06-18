@@ -10,7 +10,7 @@ from .forms import ProductForm
 
 @app.route("/")
 def index():
-    return render_template("templates/main.html")
+    return render_template("main.html")
 
 
 @app.route("/product/add", methods=["POST"])
@@ -23,7 +23,7 @@ def add_product():
 @app.route('/get_order', methods=['GET'])
 def get_order():
     order = Cart().get_order()
-    return render_template('templates/order.html', order=order)
+    return render_template('order.html', order=order)
 
 
 @app.context_processor

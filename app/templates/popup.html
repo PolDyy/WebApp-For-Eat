@@ -1,0 +1,76 @@
+<div id="popup" class="popup">
+
+  <div class="popup-content">
+    <form id="popup-form">
+    {{ product_form.hidden_tag() }}
+    <button id="close-popup" class="close-popup">X</button>
+    <h3 id="popup-h3" data-toggle="popup-h3">Заголовок</h3>
+    <h4>Выберите размер</h4>
+    <div class="button-row">
+      <button class="popup-size" id="popup-size-s" type="button" data-cost='0'>S</button>
+      <button class="popup-size" id="popup-size-m" type="button" data-cost='0'>M</button>
+      <button class="popup-size" id="popup-size-l" type="button" data-cost='0'>L</button>
+    </div>
+    <h4>Убрать</h4>
+    <ul class="removes">
+      <li class="removes-item">
+        <span class="removes-name">Лук</span>
+        <label class="switch">
+          {{product_form.onion()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+      <li class="removes-item">
+        <span class="removes-name">Перец</span>
+        <label class="switch">
+          {{product_form.peper()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+    </ul>
+    <h4>Добавить</h4>
+    <ul class="addones">
+      <li class="addones-item">
+        <span class="addones-name">Картофель фри</span>
+        <span class="addones-price">+30₽</span>
+        <label class="switch">
+          {{product_form.free()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+      <li class="addones-item">
+        <span class="addones-name">Мясо</span>
+        <span class="addones-price">+40₽</span>
+        <label class="switch">
+          <{{product_form.meat()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+      <li class="addones-item">
+        <span class="addones-name">Капуста</span>
+        <span class="addones-price">+15₽</span>
+        <label class="switch">
+          {{product_form.cabbage()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+      <li class="addones-item">
+        <span class="addones-name">Морковь</span>
+        <span class="addones-price">+15₽</span>
+        <label class="switch">
+          {{product_form.carrot()}}
+          <span class="slider round"></span>
+        </label>
+      </li>
+    </ul>
+    <div class="popup-footer">
+      <div>
+      <span id="popup-cost-text">Цена: </span>
+      <span id="popup-cost">0₽</span>
+      </div>
+      <button type="button" class="add-button">Добавить</button>
+    </div>
+  </form>
+  </div>
+
+</div>

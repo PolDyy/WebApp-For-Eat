@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+
+{%  block header %}
+    <link rel="stylesheet" href="../static/css/itc-slider.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/popup.css">
+
+    <script src="../static/js/itc-slider.js" defer></script>
+    <script src="../static/js/product.js" defer></script>
+{% endblock %}
+
+{% block body %}
+    <div class="itc-slider" data-slider="itc-slider" data-loop="true">
+
+        <div class="itc-slider__wrapper">
+            <div class="itc-slider__items ">
+                {% for product_name in products.get_products_names() %}
+                <div class="itc-slider__item">
+                    <div class="container">
+                        <h2>{{product_name}}</h2>
+
+                        <div class="sub-container">
+                            {% for product in products.get_product(product_name)%}
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>{{product.get("name")}}</h3>
+
+                                </div>
+                                <div class="card-body">
+                                    <img src={{product.get("img_src")}} alt="Картинка">
+                                </div>
+                                <div class="card-footer">
+                                    <p>от {{product.get("cost")[0]}}₽</p>
+                                    <button class="card-button" data-product="{{get_popup_header(product_name, product.get('name'))}}"
+                                    data-cost="{{products.get_product_cost(product)}}">
+                                        Добавить</button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            <div>
+                <button class="view-order" data-onclick="view-order">Оформить заказ</button>
+            </div>
+            </div>
+          <button class="itc-slider__btn itc-slider__btn_prev"></button>
+          <button class="itc-slider__btn itc-slider__btn_next"></button>
+        </div>
+    </div>
+    <button class="order-button">Оформить заказ</button>
+{% include 'popup.html' %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{%  extends 'index.html' %}
+
+{% block header %}
+    <link rel="stylesheet" href="../static/css/order.css">
+    {#    <script src="https://telegram.org/js/telegram-web-app.js"></script>#}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Ваш заказ</h2>
+        {% for product_type, products in order.order.items() %}
+            <h2> {{ product_type }}</h2>
+            <div class="sub-container">
+            {% for product in products %}
+                <div class="order-product">
+                    <span>{{ product['name'] }}</span>
+                    <span>{{ product['size']}}</span>
+                    <span>{{ product['cost'] }}</span>
+                    <span>{{ product['quantity'] }}</span>
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    <button>Оплатить</button>
+    </div>
+{%  endblock %}

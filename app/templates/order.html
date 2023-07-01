@@ -3,6 +3,10 @@
 {% block header %}
     <link rel="stylesheet" href="../static/css/order.css">
     {#    <script src="https://telegram.org/js/telegram-web-app.js"></script>#}
+    <script>
+        window.sessionStorage.setItem('order', JSON.stringify({{ order|tojson }}));
+    </script>
+    <script src="../static/js/order.js" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -16,11 +20,17 @@
                     <span>{{ product['name'] }}</span>
                     <span>{{ product['size']}}</span>
                     <span>{{ product['cost'] }}</span>
-                    <span>{{ product['quantity'] }}</span>
+                    <button type="button" class="order-product__remove" data-product="{{ product_type }}, {{ loop.index0 }}"> - </button>
+                    <span class="order-product__quantity">{{ product['quantity'] }}</span>
+                    <button type="button"  class="order-product__add" data-product="{{ product_type }}, {{ loop.index0 }}"> + </button>
                 </div>
             {% endfor %}
             </div>
         {% endfor %}
-    <button>Оплатить</button>
+        <div class="sub-container">
+            <span>Сумма: </span>
+            <span id="total-cost">{{ order.total_cost }} ₽</span>
+            <button>Оплатить</button>
+        </div>
     </div>
 {%  endblock %}

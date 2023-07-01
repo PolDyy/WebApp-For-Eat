@@ -25,6 +25,10 @@ class Cart:
         self.order["total_cost"] += int(product["cost"])
         self._save_order()
 
+    def update_cart(self, order):
+        self.order = order
+        self._save_order()
+
     def remove(self, index: int, product_type):
         product_in_order = self.order['order'].get(product_type)[index]
         self.order["total_cost"] -= int(product_in_order['cost'])

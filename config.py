@@ -10,7 +10,7 @@ class BaseConfig:
     SECRET_KEY = getenv('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TEMPLATES_FOLDER = 'app/templates'
-
+    JSON_AS_ASCII = False
     # ##### настройка Flask-Mail #####
     # MAIL_SERVER = 'smtp.googlemail.com'
     # MAIL_PORT = 587

@@ -20,7 +20,7 @@ class ProductForm(FlaskForm):
             "type": self.pr_type.data,
             "name": self.pr_name.data,
             "size": self.pr_size.data,
-            "cost": self.pr_cost.data,
+            "cost": int(self.pr_cost.data),
             "additive": [item.description for item in self._get_additive() if item.data],
             "exceptions": [item.description for item in self._get_exceptions() if item.data],
             "quantity": 1,

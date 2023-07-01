@@ -15,12 +15,6 @@ def index():
     return render_template("main.html")
 
 
-@app.route('/get_order', methods=['GET'])
-def get_order():
-    order = Cart().get_order()
-    return render_template('order.html', order=order)
-
-
 @app.route("/product/add", methods=["POST"])
 def add_product():
     form = ProductForm(request.form)
@@ -32,6 +26,12 @@ def add_product():
 #     order = json.loads(request.get_data())
 #     Cart().update_cart(order)
 #     return "ok"
+
+
+@app.route('/get_order', methods=['GET'])
+def get_order():
+    order = Cart().get_order()
+    return render_template('order.html', order=order)
 
 
 @socketio.on('action_remove_product', methods=['POST'])

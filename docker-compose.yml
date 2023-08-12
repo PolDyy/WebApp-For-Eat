@@ -1,0 +1,19 @@
+version: '3.9'
+
+volumes:
+  redis_data:
+    driver: local
+
+
+services:
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis-for-eat
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - "6379:6379"
+    volumes:
+      - 'redis_data:/bitnami/redis/data'

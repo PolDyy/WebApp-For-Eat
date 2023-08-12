@@ -12,43 +12,23 @@
 }
 
 .popup-content {
-  width: 80%;
   height: 50%;
-  max-width: 360px;
+  max-width: 315px;
+  min-width: 280px;
   min-height: 450px;
-  background-color: white;
   border-radius: 10px;
+  border-color: rgb(121, 85, 41);
+  border-width: 10px;
   padding: 20px;
   position: relative;
 }
 
-.close-popup {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background-color: transparent;
-  font-size: 20px;
-  cursor: pointer;
-}
 
 .popup-menu h3 {
   font-size: 20px;
   margin-top: 0;
 }
 
-.popup-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.popup-menu ul li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
 
 .popup-menu ul li .switch {
   padding: 5px 10px;
@@ -58,11 +38,11 @@
   cursor: pointer;
 }
 
-.popup-menu ul li .switch.on {
+.popup-menu .switch.on {
   background-color: #0f0;
 }
 
-.popup-menu ul li span.green {
+.popup-menu span.green {
   color: #0f0;
 }
 
@@ -84,16 +64,17 @@
   background-color: #333;
 }
 
-.popup-menu .add-button {
-  background-color: #008CBA;
-  color: #fff;
+.add-button {
+  padding: 10px;
+  background-color: #ffc107;
+  color: #000;
 }
 
 .popup-size {
-  background-color: #fff;
-  border: 3px solid #8b8b8b;
+  background-color: rgba(255, 219, 139, 0.4);
+  border: 3px solid #CD9575;
   border-radius: 5px;
-  color: #8b8b8b;
+  color: #CD9575;
   min-width: 25%;
   padding: 5px;
   font-family: "Roboto Medium", serif;
@@ -101,8 +82,8 @@
 
 .popup-size__selected {
 
-  border-color: #f3b121;
-  color: #f3b121;
+  border-color: #ffc107;
+  color: #ffc107;
 }
 
 .switch {
@@ -120,7 +101,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #8b8b8b;
+  background-color: #CD9575;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -137,11 +118,11 @@
 }
 
 input:checked + .slider {
-  background-color: #f3b121;
+  background-color: #ffc107;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #f3b121;
+  box-shadow: 0 0 1px #ffc107;
 }
 
 input:checked + .slider:before {
@@ -160,7 +141,7 @@ input:checked + .slider:before {
 }
 
 .addones-price{
-  color:#8b8b8b;
+  color:#CD9575;
 }
 .green {
   color:rgb(48, 168, 48);

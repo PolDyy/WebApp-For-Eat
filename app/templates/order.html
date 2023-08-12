@@ -1,36 +1,59 @@
 {%  extends 'index.html' %}
-
 {% block header %}
-    <link rel="stylesheet" href="../static/css/order.css">
+    <title> Оформить заказ </title>
+{% endblock %}
+{% block header_links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/order.css') }}">
     {#    <script src="https://telegram.org/js/telegram-web-app.js"></script>#}
-    <script>
-        window.sessionStorage.setItem('order', JSON.stringify({{ order|tojson }}));
-    </script>
-    <script src="../static/js/order.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='/js/order.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h2>Ваш заказ</h2>
-        {% for product_type, products in order.order.items() %}
-            <h2> {{ product_type }}</h2>
-            <div class="sub-container">
-            {% for product in products %}
-                <div class="order-product">
-                    <span>{{ product['name'] }}</span>
-                    <span>{{ product['size']}}</span>
-                    <span>{{ product['cost'] }}</span>
-                    <button type="button" class="order-product__remove" data-product="{{ product_type }}, {{ loop.index0 }}"> - </button>
-                    <span class="order-product__quantity">{{ product['quantity'] }}</span>
-                    <button type="button"  class="order-product__add" data-product="{{ product_type }}, {{ loop.index0 }}"> + </button>
+    <div class="container-fluid container-fluid__position">
+        <div class="container-md text-center row-order__width">
+            <h2 class="mb-4">Ваш заказ</h2>
+            {% for product_type, products in order.order.items() %}
+                <h2 class="mb-3"> {{ product_type }}</h2>
+
+                {% for product in products %}
+                <div class="row flex-nowrap text-center align-items-center justify-content-center mb-2 ">
+                    <div class="col-3 ">
+                        <span class="">{{ product['name'] }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <span class="">{{ product['size']}}</span>
+                    </div>
+                    <div class="col-auto ">
+                        <span class="">{{ product['cost'] }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <img src="{{ url_for('static', filename='/img/info24.png') }}" alt="Info" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ product.info | safe}}">
+                    </div>
+                    <div class="col-auto ">
+                        <button type="button" class="order-product__remove me-2 btn btn-warning" data-product="{{ product_type }}, {{ loop.index0 }}"> - </button>
+                        <span class="order-product__quantity me-2">{{ product['quantity'] }}</span>
+                        <button type="button"  class="order-product__add me-2 btn btn-warning " data-product="{{ product_type }}, {{ loop.index0 }}"> + </button>
+                    </div>
                 </div>
+                {% endfor %}
+
             {% endfor %}
-            </div>
-        {% endfor %}
-        <div class="sub-container">
-            <span>Сумма: </span>
-            <span id="total-cost">{{ order.total_cost }} ₽</span>
-            <button>Оплатить</button>
+            <div class="row mt-5 align-items-center justify-content-center flex-nowrap">
+                <div class="col-auto">
+                    <span>Сумма: </span>
+                </div>
+                <div class="col-auto">
+                    <span id="total-cost">{{ order.total_cost }} ₽</span>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-warning">Оплатить</button>
+                </div>
+                </div>
         </div>
     </div>
 {%  endblock %}
+
+{% block body_scripts %}
+<script src="{{ url_for('static', filename='/js/tips-init.js') }}"></script>
+{% endblock %}

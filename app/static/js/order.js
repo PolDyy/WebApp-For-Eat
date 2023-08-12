@@ -1,8 +1,8 @@
 
 class Order {
 
-    constructor() {
-        let data = JSON.parse(sessionStorage.getItem('order'))
+    constructor(json_order) {
+        let data = JSON.parse(json_order)
         this.order = data.order
         this.total_cost = data.total_cost
         console.log(data)
@@ -12,7 +12,6 @@ class Order {
         let item = this.order[key][index];
         item.quantity += 1;
         this.total_cost += item.cost;
-        this.updateSessionData();
         return item.quantity;
     }
 
@@ -21,49 +20,51 @@ class Order {
         if (item.quantity > 0) {
             item.quantity -= 1;
             this.total_cost -= item.cost;
-            this.updateSessionData();
-            return item.quantity;}
+            return item.quantity;
+        }
         return 0;
-    }
-
-    updateSessionData() {
-    let data = {
-        order: this.order,
-        total_cost: this.total_cost
-        };
-    sessionStorage.setItem('order', JSON.stringify(data));
     }
 }
 
-let order = new  Order();
+
+let order;
 const addButton = document.querySelectorAll('.order-product__add');
 const removeButton = document.querySelectorAll('.order-product__remove');
 const totalPrice = document.getElementById('total-cost');
 
-addButton.forEach((button) => {
-    button.addEventListener('click', (event) => {
-        let dataProduct = event.target.getAttribute('data-product').split(", ");
-        let quantity = order.increaseQuantity(dataProduct[0], Number(dataProduct[1]));
-        totalPrice.textContent=order.total_cost + " ₽";
-        event.target.previousElementSibling.textContent = quantity;
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io.connect('http://' + document.domain + ':' + location.port)
+
+    socket.on('connect', () => {
+        console.log("Connected")
     });
-});
-removeButton.forEach((button) => {
-    button.addEventListener('click', (event) => {
-        let dataProduct = event.target.getAttribute('data-product').split(", ")
-        let quantity = order.decreaseQuantity(dataProduct[0], Number(dataProduct[1]))
-        totalPrice.textContent=order.total_cost  + " ₽";
-        event.target.nextElementSibling.textContent = quantity;
+
+    socket.on('action_load_order', (order_data) => {
+        order = new Order(order_data)
     });
-});
 
-window.addEventListener('pagehide', function (event){
-   let data = sessionStorage.getItem('order');
+    addButton.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            let dataProduct = event.target.getAttribute('data-product').split(", ");
+            let quantity = order.increaseQuantity(dataProduct[0], Number(dataProduct[1]));
+            totalPrice.textContent=order.total_cost + " ₽";
+            event.target.previousElementSibling.textContent = quantity;
+            socket.emit('action_add_product', JSON.stringify(dataProduct));
+        });
+    });
 
-   // navigator.sendBeacon('/update-cart', data);
-   let xhr = new XMLHttpRequest();
-   xhr.open('POST', '/update-cart', false);
-   xhr.setRequestHeader('Content-Type', 'application/json');
-   xhr.send(data);
-
-});
+    removeButton.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            let dataProduct = event.target.getAttribute('data-product').split(", ")
+            let quantity = order.decreaseQuantity(dataProduct[0], Number(dataProduct[1]))
+            totalPrice.textContent=order.total_cost  + " ₽";
+            if (quantity <= 0) {
+                let productElement = button.closest('.row');
+                productElement.parentNode.removeChild(productElement);
+            } else {
+                event.target.nextElementSibling.textContent = quantity;
+            }
+            socket.emit('action_remove_product', JSON.stringify(dataProduct));
+        });
+    });
+})

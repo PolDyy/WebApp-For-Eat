@@ -21,18 +21,54 @@ class ProductForm(FlaskForm):
             "name": self.pr_name.data,
             "size": self.pr_size.data,
             "cost": int(self.pr_cost.data),
-            "additive": [item.description for item in self._get_additive() if item.data],
-            "exceptions": [item.description for item in self._get_exceptions() if item.data],
+            "info": self._get_info_field(),
             "quantity": 1,
         }
         return data_to_return
 
+    def _get_additive_desc(self):
+        additive = [self.free, self.meat, self.cabbage, self.carrot]
+        return [item.description for item in additive if item.data]
+
+    def _get_exceptions_desc(self):
+        exceptions = [self.onion, self.peper]
+        return [item.description for item in exceptions if item.data]
+
     def _get_additive(self):
-        return [self.free, self.meat, self.cabbage, self.carrot]
+        additive = self._get_additive_desc()
+        if len(additive) != 0:
+            if len(additive) == 1:
+                return f"Добавить: {additive[0]}"
+            sting_start = "Добавить: "
+            string_end = ""
+            for elem in additive:
+                string_end = "; ".join((elem, string_end))
+
+            return "".join((sting_start, string_end))
 
     def _get_exceptions(self):
-        return [self.onion, self.peper]
+        exceptions = self._get_exceptions_desc()
+        if len(exceptions) != 0:
+            if len(exceptions) == 1:
+                return f"Убрать: {exceptions[0]}"
+            sting_start = "Убрать: "
+            string_end = ""
+            for elem in exceptions:
+                string_end = "; ".join((elem, string_end))
 
+            return "".join((sting_start, string_end))
+
+    def _get_info_field(self):
+        additive = self._get_additive()
+        exceptions = self._get_exceptions()
+        if not additive and not exceptions:
+            return "Без изменений"
+        if additive and exceptions:
+            return f"{additive}\n{exceptions}"
+        elif additive:
+            return additive
+        else:
+            return exceptions
     # def get_dict(self, form):
     #     data_to_return = {
     #         "type": form.pr_type.data,

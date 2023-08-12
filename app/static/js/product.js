@@ -25,19 +25,14 @@ const cardButtons = document.querySelectorAll('.card-button');
 const addCheckBoxes = document.querySelectorAll('.addones-checkbox');
 const removeCheckBoxes = document.querySelectorAll('.removes-checkbox');
 const addButton = document.querySelector(".add-button")
-const closePopupBtn = document.getElementById('close-popup');
+const popupAddButton = document.getElementById('popup-add-button');
 const sizeButtons = document.querySelectorAll('.popup-size');
+const toastContainer = document.querySelector('.toast-container');
 const popup = document.getElementById('popup');
 
 
 // setBotStyle();
 clearPopup();
-
-closePopupBtn.addEventListener('click', () => {
-    popup.style.display = 'none';
-    clearPopup();
-    
-  });
 
 popup.addEventListener('click', (event) => {
     if (event.target === popup) {
@@ -55,15 +50,17 @@ function clearPopup() {
     form.reset();
 
     prices.forEach((price) => {
-    price.classList.remove('green');
+        price.classList.remove('green');
     });
     let checkboxes = [...addCheckBoxes, ...removeCheckBoxes];
     checkboxes.forEach((checkbox) => {
-    checkbox.checked = false;
+        checkbox.checked = false;
     });
-        sizeButtons.forEach((btn) => {
+    sizeButtons.forEach((btn) => {
         btn.classList.remove('popup-size__selected')
     });
+    popupAddButton.classList.remove('visible');
+    popupAddButton.classList.add('invisible');
 }
 
 sizeButtons.forEach(function (button) {
@@ -73,7 +70,10 @@ sizeButtons.forEach(function (button) {
         document.getElementById('popup-cost').textContent=window.product.getPrice() + "₽";
         document.getElementById('pr_size').value = event.target.textContent;
         document.getElementById('pr_cost').value = window.product.getPrice();
+        popupAddButton.classList.remove('invisible');
+        popupAddButton.classList.add('visible');
         selectSizeBtn(event.target)
+
     });
 });
 
@@ -91,6 +91,7 @@ cardButtons.forEach(function(button) {
     window.product = new Product(product_to_add.split(", ")[0], product_to_add.split(", ")[1]);
     document.getElementById('pr_type').value=window.product.type;
     document.getElementById('pr_name').value=window.product.name;
+
     showPopup(product_to_add, pr_cost);
     
   });
@@ -150,6 +151,39 @@ function addProduct(form, cb){
         console.error("Ошибка:", error);
     })
 }
+
+popupAddButton.addEventListener('click', () => {
+  const toast = document.createElement('div');
+
+  toast.className = 'toast align-items-center text-bg-warning border-0';
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+
+  toast.innerHTML = `
+    <div class="d-flex">
+        <div class="toast-body">
+          Добавлено к заказу
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+    </div>
+  `;
+  toastContainer.appendChild(toast);
+  const toastInstance = bootstrap.Toast.getOrCreateInstance(toast, {
+    autohide: true,
+    delay: 1500
+  });
+  toastInstance.show();
+
+  // Удаление сообщения из контейнера после скрытия
+  toast.addEventListener('hidden.bs.toast', () => {
+    toast.remove();
+  });
+});
+
+
+
+
 
 // function setBotStyle() {
 //     window.bot.expand();

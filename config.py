@@ -1,3 +1,4 @@
+import redis
 from pathlib import Path
 from os import getenv
 from dotenv import load_dotenv
@@ -11,25 +12,22 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TEMPLATES_FOLDER = 'app/templates'
     JSON_AS_ASCII = False
-    # ##### настройка Flask-Mail #####
-    # MAIL_SERVER = 'smtp.googlemail.com'
-    # MAIL_PORT = 587
-    # MAIL_USE_TLS = True
-    # MAIL_USERNAME = getenv('MAIL_USERNAME') or 'YOU_MAIL@gmail.com'
-    # MAIL_DEFAULT_SENDER = MAIL_USERNAME
-    # MAIL_PASSWORD = getenv('MAIL_PASSWORD') or 'password'
+
+    SESSION_TYPE = 'redis'
+    SESSION_PERMANENT = False
+    SESSION_USE_SIGNER = True
+
+    SESSION_REDIS = redis.StrictRedis(host='0.0.0.0', port=6379, db=0)
 
 
 class DevelopementConfig(BaseConfig):
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = getenv('DEVELOPMENT_DATABASE_URI')
 
 
 class TestingConfig(BaseConfig):
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = getenv('TESTING_DATABASE_URI')
 
 
 class ProductionConfig(BaseConfig):
     DEBUG = False
-    # SQLALCHEMY_DATABASE_URI = getenv('PRODUCTION_DATABASE_URI')
+

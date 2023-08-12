@@ -36,7 +36,6 @@ class Cart:
         else:
             product_in_order['quantity'] -= 1
         self._save_order()
-        print(self.order)
 
     def increase_product_quantity(self, product_data: list):
         product_in_order = self._get_product(product_data)
